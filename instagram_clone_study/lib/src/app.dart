@@ -49,16 +49,16 @@ class App extends GetView<BottomNavController> {
                 BottomNavigationBarItem(
                   icon: ImageData(IconsPath.searchOff),
                   activeIcon: ImageData(IconsPath.searchOn),
-                  label: 'home',
+                  label: 'search',
                 ),
                 BottomNavigationBarItem(
                   icon: ImageData(IconsPath.uploadIcon),
-                  label: 'home',
+                  label: 'upload',
                 ),
                 BottomNavigationBarItem(
                   icon: ImageData(IconsPath.activeOff),
                   activeIcon: ImageData(IconsPath.activeOn),
-                  label: 'home',
+                  label: 'activity',
                 ),
                 BottomNavigationBarItem(
                   icon: Container(
@@ -67,14 +67,12 @@ class App extends GetView<BottomNavController> {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.grey),
                   ),
-                  label: 'home',
+                  label: 'mypage',
                 ),
               ]),
         ),
       ),
-      onWillPop: () async {
-        return true;
-      },
+      onWillPop: controller.willPopAction,
     );
   }
 }
