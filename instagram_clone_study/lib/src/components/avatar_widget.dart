@@ -21,29 +21,47 @@ class AvatarWidget extends StatelessWidget {
 
   Widget type1widget() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.purple, Colors.orange]),
-        shape: BoxShape.circle,
-      ),
-      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(size! ),
-          child: Container(
-              width: size,
-              height: size,
-              child: CachedNetworkImage(
-                imageUrl: thumbPath,
-                fit: BoxFit.cover,
-              )),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.purple, Colors.orange]),
+          shape: BoxShape.circle,
         ),
+        child: type2widget());
+  }
+
+  Widget type2widget() {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(size!),
+        child: Container(
+            width: size,
+            height: size,
+            child: CachedNetworkImage(
+              imageUrl: thumbPath,
+              fit: BoxFit.cover,
+            )),
       ),
+    );
+  }
+
+  Widget type3widget() {
+    return Row(
+      children: [
+        type1widget(),
+        Text(
+          nickname ?? '',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        )
+      ],
     );
   }
 
@@ -54,10 +72,10 @@ class AvatarWidget extends StatelessWidget {
         return type1widget();
         break;
       case AvartarType.TYPE2:
-        return Container();
+        return type2widget();
         break;
       case AvartarType.TYPE3:
-        return Container();
+        return type3widget();
         break;
     }
   }
