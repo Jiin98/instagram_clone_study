@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_clone_study/src/pages/search/search_list.dart';
 import 'package:quiver/iterables.dart';
 
 class Search extends StatefulWidget {
@@ -33,19 +34,24 @@ class _SearchState extends State<Search> {
     return Row(
       children: [
         Expanded(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-            margin: EdgeInsets.only(left: 15),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: Color(0xffefefef)),
-            child: Row(children: [
-              Icon(Icons.search),
-              Text(
-                '검색',
-                style: TextStyle(fontSize: 15, color: Color(0xff838383)),
-              )
-            ]),
+          child: GestureDetector(
+            onTap: () {
+              Get.to(SearchList());
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              margin: EdgeInsets.only(left: 15),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: Color(0xffefefef)),
+              child: Row(children: [
+                Icon(Icons.search),
+                Text(
+                  '검색',
+                  style: TextStyle(fontSize: 15, color: Color(0xff838383)),
+                )
+              ]),
+            ),
           ),
         ),
         Padding(
@@ -73,7 +79,11 @@ class _SearchState extends State<Search> {
                         color: Colors.primaries[
                             Random().nextInt(Colors.primaries.length)],
                       ),
-                      child: CachedNetworkImage(imageUrl: 'https://thumb.photo-ac.com/41/41e5635bbdba6c506fef237cabad243c_t.jpeg', fit: BoxFit.cover,),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            'https://thumb.photo-ac.com/41/41e5635bbdba6c506fef237cabad243c_t.jpeg',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ).toList()),
                 )).toList(),
