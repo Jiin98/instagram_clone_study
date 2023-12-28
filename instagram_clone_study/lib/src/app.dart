@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:instagram_clone_study/src/components/image_data.dart';
 import 'package:instagram_clone_study/src/controllers/bottom_nav_controller.dart';
 import 'package:instagram_clone_study/src/pages/home.dart';
+import 'package:instagram_clone_study/src/pages/search.dart';
 
 class App extends GetView<BottomNavController> {
   const App({super.key});
@@ -23,7 +24,7 @@ class App extends GetView<BottomNavController> {
                     child: ImageData(IconsPath.directMessage, width: 50)),
               )
             ],
-          ), 
+          ),
           backgroundColor: Colors.white,
           body: IndexedStack(
             index: controller.pageIndex.value,
@@ -32,7 +33,7 @@ class App extends GetView<BottomNavController> {
                 child: Home(),
               ),
               Container(
-                child: Center(child: Text('SEARCH')),
+                child: Search(),
               ),
               Container(
                 child: Center(child: Text('UPLOAD')),
