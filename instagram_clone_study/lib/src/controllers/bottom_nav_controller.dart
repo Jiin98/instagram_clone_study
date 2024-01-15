@@ -9,6 +9,8 @@ enum PageName { HOME, SEARCH, UPLOAD, ACTIVITY, MYPAGE }
 
 class BottomNavController extends GetxController {
   RxInt pageIndex = 0.obs;
+  GlobalKey<NavigatorState> searchPageNavigationKey =
+      GlobalKey<NavigatorState>();
   List<int> bottomHistory = [0];
 
   void changeBottomNav(int value, {bool hasGesture = true}) {
@@ -44,20 +46,26 @@ class BottomNavController extends GetxController {
   Future<bool> willPopAction() async {
     if (bottomHistory.length == 1) {
       showDialog(
-          context: Get.context!,
-          builder: (context) => MessagePopup(
-                title: '시스템',
-                message: '종료하시겠습니까?',
-                okCallback: () {
-                  exit(0);
-                },
-                cancleCallback: Get.back,
-              )); 
+        context: Get.context!,
+        builder: (context) => MessagePopup(
+          title: '시스템',
+          message: '종료하시겠습니까?',
+          okCallback: () {
+            exit(0);
+          },
+          cancleCallback: Get.back,
+        ),
+      );
       print('Exit!');
       return true;
     } else {
-      print('Go to before page!');
-      bottomHistory.removeAt(bottomHistory.length - 1);
+      var page = PageName.values[bottomHistory.last];
+      if (page == PageName.SEARCH) {
+        var value = await searchPageNavigationKey.currentState!.maybePop();
+        if (value) return false;
+      }
+
+      bottomHistory.removeLast();
       print('Removed bottomHistory: $bottomHistory');
       var index = bottomHistory.last;
       changeBottomNav(index, hasGesture: false);

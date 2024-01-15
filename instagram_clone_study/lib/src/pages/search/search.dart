@@ -36,7 +36,12 @@ class _SearchState extends State<Search> {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              Get.to(SearchList());
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchList(),
+                ),
+              );
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),

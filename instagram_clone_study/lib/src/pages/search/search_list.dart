@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_clone_study/src/components/image_data.dart';
+import 'package:instagram_clone_study/src/controllers/bottom_nav_controller.dart';
 
 class SearchList extends StatefulWidget {
   const SearchList({super.key});
@@ -20,15 +21,23 @@ class _SearchListState extends State<SearchList> with TickerProviderStateMixin {
 
   Widget _body() {
     return Container(
-      child: TabBarView(
-        children: [
-          Center(child: Text('인기페이지'),),
-          Center(child: Text('계정페이지'),),
-          Center(child: Text('오디오페이지'),),
-          Center(child: Text('태그페이지'),),
-          Center(child: Text('장소페이지'),),
-        ], 
-        controller: tabController),
+      child: TabBarView(children: [
+        Center(
+          child: Text('인기페이지'),
+        ),
+        Center(
+          child: Text('계정페이지'),
+        ),
+        Center(
+          child: Text('오디오페이지'),
+        ),
+        Center(
+          child: Text('태그페이지'),
+        ),
+        Center(
+          child: Text('장소페이지'),
+        ),
+      ], controller: tabController),
     );
   }
 
@@ -47,7 +56,8 @@ class _SearchListState extends State<SearchList> with TickerProviderStateMixin {
       preferredSize: Size.fromHeight(AppBar().preferredSize.height),
       child: Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Color(0xffe4e4e4)))),
+          border: Border(bottom: BorderSide(color: Color(0xffe4e4e4))),
+        ),
         height: 50,
         width: Size.infinite.width,
         child: TabBar(
@@ -56,7 +66,7 @@ class _SearchListState extends State<SearchList> with TickerProviderStateMixin {
             tabs: [
               _tabMenuOne('인기'),
               _tabMenuOne('계정'),
-              _tabMenuOne('오디오'), 
+              _tabMenuOne('오디오'),
               _tabMenuOne('태그'),
               _tabMenuOne('장소'),
             ]),
@@ -69,7 +79,9 @@ class _SearchListState extends State<SearchList> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: Get.back,
+          onTap: () {
+            Get.find<BottomNavController>().willPopAction();
+          },
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: ImageData(IconsPath.backBtnIcon),
