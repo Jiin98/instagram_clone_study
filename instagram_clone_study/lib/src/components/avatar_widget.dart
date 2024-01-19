@@ -70,13 +70,10 @@ class AvatarWidget extends StatelessWidget {
     switch (type) {
       case AvartarType.TYPE1:
         return type1widget();
-        break;
       case AvartarType.TYPE2:
         return type2widget();
-        break;
       case AvartarType.TYPE3:
         return type3widget();
-        break;
     }
   }
 }
