@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone_study/src/components/image_data.dart';
 import 'package:instagram_clone_study/src/controllers/bottom_nav_controller.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'dart:typed_data';
 
 class Upload extends StatefulWidget {
   const Upload({super.key});
@@ -12,6 +13,9 @@ class Upload extends StatefulWidget {
 
 class _UploadState extends State<Upload> {
   var albums = <AssetPathEntity>[];
+  var headerTitle = '';
+  var imageList = <AssetEntity>[];
+  AssetEntity? selectedImage;
 
   @override
   void initState() {
@@ -37,17 +41,34 @@ class _UploadState extends State<Upload> {
     } else {}
   }
 
-  void _loadData() {
-    print(albums.first.name);
+  void _loadData() async {
+    headerTitle = albums.first.name;
+    await _pagingPhotos();
+    update();
   }
+
+  Future<void> _pagingPhotos() async {
+    var photos = await albums.first.getAssetListPaged(page: 0, size: 30);
+    imageList.addAll(photos);
+    selectedImage = imageList.first;
+  }
+
+  void update() => setState(() {});
 
   Widget _imagePreview() {
     var width = MediaQuery.of(context).size.width;
     return Container(
-      width: width,
-      height: width,
-      color: Colors.grey,
-    );
+        width: width,
+        height: width,
+        color: Colors.grey,
+        child: selectedImage == null
+            ? Container()
+            : _photoWidget(selectedImage!, width.toInt(), builder: (data) {
+                return Image.memory(
+                  data,
+                  fit: BoxFit.cover,
+                );
+              }));
   }
 
   Widget _header() {
@@ -59,9 +80,9 @@ class _UploadState extends State<Upload> {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
-              children: const [
-                const Text(
-                  '갤러리',
+              children: [
+                Text(
+                  headerTitle,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -117,13 +138,32 @@ class _UploadState extends State<Upload> {
         crossAxisSpacing: 1,
         childAspectRatio: 1,
       ),
-      itemCount: 100,
+      itemCount: imageList.length,
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          color: Colors.grey,
-        );
+        return _photoWidget(imageList[index], 200, builder: (data) {
+          return Opacity(
+            opacity: imageList[index] == selectedImage ? 0.3 : 1,
+            child: Image.memory(
+              data,
+              fit: BoxFit.cover,
+            ),
+          );
+        });
       },
     );
+  }
+
+  Widget _photoWidget(AssetEntity asset, int size,
+      {required Widget Function(Uint8List) builder}) {
+    return FutureBuilder(
+        future: asset.thumbnailDataWithSize(ThumbnailSize(size, size)),
+        builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
+          if (snapshot.hasData) {
+            return builder(snapshot.data!);
+          } else {
+            return Container();
+          }
+        });
   }
 
   @override
