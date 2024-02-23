@@ -77,19 +77,65 @@ class _UploadState extends State<Upload> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Text(
-                  headerTitle,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
                 ),
-                Icon(Icons.arrow_drop_down)
-              ],
+                builder: (_) => Container(
+                  height: albums.length * 60,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 7),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black54,
+                          ),
+                          width: 40,
+                          height: 4,
+                        ),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: List.generate(
+                              albums.length,
+                              (index) => Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
+                                child: Text(albums[index].name),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Text(
+                    headerTitle,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Icon(Icons.arrow_drop_down)
+                ],
+              ),
             ),
           ),
           Row(
@@ -141,11 +187,17 @@ class _UploadState extends State<Upload> {
       itemCount: imageList.length,
       itemBuilder: (BuildContext context, int index) {
         return _photoWidget(imageList[index], 200, builder: (data) {
-          return Opacity(
-            opacity: imageList[index] == selectedImage ? 0.3 : 1,
-            child: Image.memory(
-              data,
-              fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: () {
+              selectedImage = imageList[index];
+              update();
+            },
+            child: Opacity(
+              opacity: imageList[index] == selectedImage ? 0.3 : 1,
+              child: Image.memory(
+                data,
+                fit: BoxFit.cover,
+              ),
             ),
           );
         });
